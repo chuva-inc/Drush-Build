@@ -39,7 +39,7 @@ function drush_build_drush_command() {
  */
 function drush_drush_build_build($buildfile = FALSE) {
   if (!$buildfile) {
-    $buildfile = drush_build_find_buildfile();
+    $buildfile = drush_build_find_buildfile(getcwd());
   }
 
   // Parse .info file reusing some Drush Make functions
@@ -62,8 +62,8 @@ function drush_drush_build_build($buildfile = FALSE) {
 /**
  * Scan directory looking for buildfiles.
  */
-function drush_build_find_buildfile() {
-  $files = scandir(getcwd());
+function drush_build_find_buildfile($directory) {
+  $files = scandir($directory);
 
   foreach ($files as $file) {
     if (is_file($file) && preg_match('/\.build$/', $file)) {
