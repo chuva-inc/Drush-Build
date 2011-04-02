@@ -50,7 +50,7 @@ function drush_drush_build_build($buildfile = FALSE) {
   $buildpath = $info['build'];
 
   drush_shell_exec("rm -rf $buildpath");
-  drush_shell_exec("drush make $makeoptions $makefile $buildpath");
+  drush_shell_exec_interactive("drush make $makeoptions $makefile $buildpath");
 
   $sitepath = realpath($info['instance']);
   $sitelink = realpath($buildpath) . '/sites/' . $info['site'];
