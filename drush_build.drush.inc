@@ -52,10 +52,10 @@ function drush_drush_build_build($buildfile = FALSE) {
   drush_shell_exec("rm -rf $buildpath");
   drush_shell_exec("drush make $makefile $buildpath");
 
-  $sitepath = $info['instance'];
+  $sitepath = realpath($info['instance']);
   $sitelink = realpath($buildpath) . '/sites/' . $info['site'];
 
-  drush_shell_exec("rm -rf $sitelink");
+  drush_shell_exec("rm -rf \"$sitelink\"");
   drush_shell_exec("ln -s \"$sitepath\" \"$sitelink\"");
 }
 
