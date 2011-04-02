@@ -46,17 +46,34 @@ function drush_drush_build_build($buildfile = FALSE) {
   $info = _drush_make_parse_info_file(drush_make_get_data($buildfile));
 
   $makefile = $info['makefile'];
-  $makeoptions = $info['makeoptions'];
+  $makeoptions = drush_build_format_makeoptions($info['makeoptions']);
   $buildpath = $info['build'];
 
   drush_shell_exec("rm -rf $buildpath");
-  drush_shell_exec("drush make $makefile $buildpath");
+  drush_shell_exec("drush make $makeoptions $makefile $buildpath");
 
   $sitepath = realpath($info['instance']);
   $sitelink = realpath($buildpath) . '/sites/' . $info['site'];
 
   drush_shell_exec("rm -rf \"$sitelink\"");
   drush_shell_exec("ln -s \"$sitepath\" \"$sitelink\"");
+}
+
+/**
+ * Format options to a command-line format.
+ */
+function drush_build_format_makeoptions($options) {
+  foreach ($options as $option => $value) {
+    if (is_array($value)) {
+      $value = implode(',', $value);
+    }
+    if ($value) {
+      $value = '=' . $value;
+    }
+    $formatted_options[] = '--' . $option . $value;
+  }
+
+  return implode(' ', $formatted_options);
 }
 
 /**
