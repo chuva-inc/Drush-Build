@@ -1,0 +1,1 @@
+This drush extension is based in the code from http://drupal.org/node/974726
